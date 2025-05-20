@@ -17,34 +17,65 @@ public class App {
             String clientId = twitchGetter.getClientId(); // client id
             String clientSecret = twitchGetter.getClientSecret(); // client secret
 
-            // String output = API.getData("https://api.igdb.com/v4/genres/", bearerCode, clientId, "fields *; limit 500;");
-            // // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
-            // JSONArray genreArray = new JSONArray(output);
-
-            // ArrayList<GenreInfo> genreList = new ArrayList<>();
-            // for (int i = 0; i < genreArray.length(); i++) {
-            //     JSONObject genre = genreArray.getJSONObject(i);
-            //     GenreInfo item = new GenreInfo(genre.getString("name"), genre.getInt("id"));
-            //     genreList.add(item);
-            //     // System.out.println("count: " + (i+1));
-            //     // System.out.println("id: " + genre.getInt("id"));
-            //     // System.out.println("genre: " + genre.getString("name"));
-            // }
-
-
-
-            String output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null; limit 1;");
-            JSONObject gameCountObject = new JSONObject(output);
-            int gameCount = gameCountObject.getInt("count");
-            int offset = (int) (Math.random() * ((gameCount - 10) - 0 + 1) + 0);
-            output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null; limit 10; offset " + offset + ";");
-            // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
-            JSONArray gameArray = new JSONArray(output);
-
             Scanner scan = new Scanner(System.in);
             System.out.println("Welcome! Press x to start");
             String input = scan.nextLine();
+            System.out.println("Choose an option:\n1)5 random games to guess\n2)5 games to guess from a franchise");
+            int option = scan.nextInt();
+            scan.nextLine();
+            String output = null;
+            JSONObject gameCountObject = null;
+            int gameCount;
+            int offset;
+            JSONArray gameArray = null;
+            String franchiseChoice = null;
+            if (option == 1) {
+                System.out.print("Loading");
+                output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 1;");
+                TimeUnit.SECONDS.sleep(1);
+                gameCountObject = new JSONObject(output);
+                gameCount = gameCountObject.getInt("count");
+                offset = (int) (Math.random() * ((gameCount - 5) - 0 + 1) + 0);
+                output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 5; offset " + offset + ";");
+                // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
+                gameArray = new JSONArray(output);
+            }
+            else if (option == 2){
+
+                System.out.println("Type in a popular franchise: ");
+                franchiseChoice = scan.nextLine();
+                System.out.print("Loading");
+                output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 1; search \""+ franchiseChoice + "\";");
+                TimeUnit.SECONDS.sleep(1);
+                gameCountObject = new JSONObject(output);
+                gameCount = gameCountObject.getInt("count");
+                offset = (int) (Math.random() * ((gameCount - 5) - 0 + 1) + 0);
+                output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 5; offset " + offset + "; search \"" + franchiseChoice + "\";");
+                // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
+                gameArray = new JSONArray(output);   
+            }
+            else{
+                System.out.println("That's not an option!");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.println("Defaulted to 10 random games");
+                System.out.print("Loading");
+                output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 1;");
+                TimeUnit.SECONDS.sleep(1);
+                gameCountObject = new JSONObject(output);
+                gameCount = gameCountObject.getInt("count");
+                offset = (int) (Math.random() * ((gameCount - 5) - 0 + 1) + 0);
+                output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 5; offset " + offset + ";");
+                // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
+                gameArray = new JSONArray(output);
+            }
+
+            TimeUnit.SECONDS.sleep(1);
+            System.out.print(".");
+            TimeUnit.SECONDS.sleep(1);
+            System.out.print(".");
+            TimeUnit.SECONDS.sleep(1);            
             while (input.equals("x")) {
+                TimeUnit.SECONDS.sleep(1);
                 ArrayList<GameInfo> gameList = new ArrayList<>();
                 for (int i = 0; i < gameArray.length(); i ++) {
                     JSONObject game = gameArray.getJSONObject(i);
@@ -93,36 +124,117 @@ public class App {
                     gameList.add(item);
                 }
 
+                // for (int i = 0; i < gameList.size(); i ++) {
+                //     System.out.println(i + 1);
+                //     System.out.println("Genre: " + gameList.get(i).getGenreName());
+                //     System.out.println("Type: " + gameList.get(i).getGameType());
+                //     System.out.println("Engine: " + gameList.get(i).getGameEngineName());
+                //     System.out.println("Company Name: " + gameList.get(i).getCompanyName());
+                //     System.out.println("Platform name: " + gameList.get(i).getplatformName());
+                //     System.out.println("Name: " + gameList.get(i).getName());
+                //     System.out.println("Summary: " + gameList.get(i).getSummary());
+                //     System.out.println();
+                // }
+
+                int randomNumber = (int) (Math.random() * (gameList.size() - 1 + 0 + 1) + 0);
+                GameInfo correctGame = gameList.get(randomNumber);
+                System.out.println(correctGame.getName());
+                boolean genreCorrect = false;
+                boolean typeCorrect = false;
+                boolean engineCorrect = false;
+                boolean companyCorrect = false;
+                boolean platformCorrect = false;
+                System.out.println("\nGuess the game from this list! ");
                 for (int i = 0; i < gameList.size(); i ++) {
-                    System.out.println(i + 1);
-                    System.out.println("Genre: " + gameList.get(i).getGenreName());
-                    System.out.println("Type: " + gameList.get(i).getGameType());
-                    System.out.println("Engine: " + gameList.get(i).getGameEngineName());
-                    System.out.println("Company Name: " + gameList.get(i).getCompanyName());
-                    System.out.println("Platform name: " + gameList.get(i).getplatformName());
-                    System.out.println("Name: " + gameList.get(i).getName());
-                    System.out.println("Summary: " + gameList.get(i).getSummary());
-                    System.out.println();
+                    System.out.println(i+1 + ") " + gameList.get(i).getName());
                 }
+                if (genreCorrect) {
+                    System.out.println("Genre: " + "✅");
+                }
+                else {
+                    System.out.println("Genre: " + "❌");
+                }
+                System.out.println("Input: ");
+                int guess = scan.nextInt();
+                scan.nextLine();
+                while (!gameList.get(guess - 1).getName().equals(correctGame.getName())) {
+                    System.out.println("Incorrect!");
+                    TimeUnit.SECONDS.sleep(1);
+                    for (int i = 0; i < gameList.size(); i ++) {
+                        System.out.println(i+1 + ") " + gameList.get(i).getName());
+                    }
+                    System.out.println("Input: ");
+                    guess = scan.nextInt();
+                    scan.nextLine();
+                }
+                if (gameList.get(guess - 1).getName().equals(correctGame.getName())) {
+                    System.out.println("Correct!");
+                }
+
                 System.out.println("Press x to continue or press n to exit");
                 input = scan.nextLine();
                 if (input.equals("n")) {
                     break;
                 }
+                System.out.println("Choose an option:\n1)5 random games to guess\n2)5 games to guess from a franchise");
+                option = scan.nextInt();
+                scan.nextLine();
                 //i learned this from https://stackoverflow.com/questions/24104313/how-do-i-make-a-delay-in-java
-                System.out.print("Loading");
-                TimeUnit.SECONDS.sleep(1);
+                if (option == 1) {
+                    System.out.print("Loading");
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.print(".");
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.print(".");
+                    TimeUnit.SECONDS.sleep(1);
+                    output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 1;");
+                    TimeUnit.SECONDS.sleep(1);
+                    gameCountObject = new JSONObject(output);
+                    gameCount = gameCountObject.getInt("count");
+                    offset = (int) (Math.random() * ((gameCount - 5) - 0 + 1) + 0);
+                    output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 5; offset " + offset + ";");
+                    // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
+                    gameArray = new JSONArray(output);
+                }
+                else if (option == 2){
+
+                    System.out.println("Type in a popular franchise: ");
+                    franchiseChoice = scan.nextLine();
+                    System.out.print("Loading");
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.print(".");
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.print(".");
+                    TimeUnit.SECONDS.sleep(1);                
+                    output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 1; search \""+ franchiseChoice + "\";");
+                    TimeUnit.SECONDS.sleep(1);
+                    gameCountObject = new JSONObject(output);
+                    gameCount = gameCountObject.getInt("count");
+                    offset = (int) (Math.random() * ((gameCount - 5) - 0 + 1) + 0);
+                    output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 5; offset " + offset + "; search \"" + franchiseChoice + "\";");
+                    // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
+                    gameArray = new JSONArray(output);   
+                }
+                else{
+                    System.out.println("That's not an option!");
+                    System.out.println("Defaulted to 5 random games");
+                    System.out.print("Loading");
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.print(".");
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.print(".");
+                    TimeUnit.SECONDS.sleep(1);                
+                    output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 1;");
+                    TimeUnit.SECONDS.sleep(1);
+                    gameCountObject = new JSONObject(output);
+                    gameCount = gameCountObject.getInt("count");
+                    offset = (int) (Math.random() * ((gameCount - 5) - 0 + 1) + 0);
+                    output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null & game_type = 0; limit 5; offset " + offset + ";");
+                    // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
+                    gameArray = new JSONArray(output);
+                }
                 System.out.print(".");
                 TimeUnit.SECONDS.sleep(1);
-                System.out.print(".");
-                TimeUnit.SECONDS.sleep(1);
-                output = API.getData("https://api.igdb.com/v4/games/count", bearerCode, clientId, "fields id; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null; limit 1;");
-                gameCountObject = new JSONObject(output);
-                gameCount = gameCountObject.getInt("count");
-                offset = (int) (Math.random() * ((gameCount - 10) - 0 + 1) + 0);
-                output = API.getData("https://api.igdb.com/v4/games", bearerCode, clientId, "fields name, genres.*, game_engines.*, involved_companies.*, platforms.*, game_type, summary; where genres != null & game_engines != null & involved_companies != null & platforms != null & summary != null; limit 10; offset " + offset + ";");
-                gameArray = new JSONArray(output);
-                System.out.print(".");
                 TimeUnit.SECONDS.sleep(1);
             }
 
