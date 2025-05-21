@@ -126,17 +126,6 @@ public class App {
                     gameList.add(item);
                 }
 
-                // for (int i = 0; i < gameList.size(); i ++) {
-                //     System.out.println(i + 1);
-                //     System.out.println("Genre: " + gameList.get(i).getGenreName());
-                //     System.out.println("Type: " + gameList.get(i).getGameType());
-                //     System.out.println("Engine: " + gameList.get(i).getGameEngineName());
-                //     System.out.println("Company Name: " + gameList.get(i).getCompanyName());
-                //     System.out.println("Platform name: " + gameList.get(i).getplatformName());
-                //     System.out.println("Name: " + gameList.get(i).getName());
-                //     System.out.println("Summary: " + gameList.get(i).getSummary());
-                //     System.out.println();
-                // }
                 int roundPoints = 7;
                 int randomNumber = (int) (Math.random() * (gameList.size() - 1 + 0 + 1) + 0);
                 GameInfo correctGame = gameList.get(randomNumber);
@@ -148,6 +137,12 @@ public class App {
                 boolean platformCorrect = false;
                 boolean correct = false;
                 System.out.println();
+
+                ArrayList<String> totalGenreCorrect = new ArrayList<>();
+                ArrayList<String> totalEngineCorrect = new ArrayList<>();
+                ArrayList<String> totalCompanyCorrect = new ArrayList<>();
+                ArrayList<String> totalPlatformCorrect = new ArrayList<>();
+
                 while (correct == false) {
                     System.out.println("ROUND " + (rounds + 1));
                     System.out.println("\nGuess the game from this list! ");
@@ -158,11 +153,13 @@ public class App {
                     }
 
                     if (genreCorrect) {
-                        System.out.println("Genre: " + "✅" + " " + correctGame.getGenreName());
+                        System.out.println("Genre: " + "✅" + " " + totalGenreCorrect);
                     }
                     else {
                         System.out.println("Genre: " + "❌");
                     }
+                    totalGenreCorrect = new ArrayList<>();
+                    genreCorrect = false;
 
                     if (typeCorrect) {
                         System.out.println("Type: " + "✅" + " " + correctGame.getGameType());
@@ -172,25 +169,31 @@ public class App {
                     }
 
                     if (engineCorrect) {
-                        System.out.println("Game engine: " + "✅" + " " + correctGame.getGameEngineName());
+                        System.out.println("Game engine: " + "✅" + " " + totalEngineCorrect);
                     }
                     else {
                         System.out.println("Game engine: " + "❌");
                     }
+                    totalEngineCorrect = new ArrayList<>();
+                    engineCorrect = false;
 
                     if (companyCorrect) {
-                        System.out.println("Game company: " + "✅" + " " + correctGame.getCompanyName());
+                        System.out.println("Game company: " + "✅" + " " + totalCompanyCorrect);
                     }
                     else {
                         System.out.println("Game company: " + "❌");
                     }
+                    totalCompanyCorrect = new ArrayList<>();
+                    companyCorrect = false;
 
                     if (platformCorrect) {
-                        System.out.println("Platform: " + "✅" + " " + correctGame.getplatformName());
+                        System.out.println("Platform: " + "✅" + " " + totalPlatformCorrect);
                     }
                     else {
                         System.out.println("Platform: " + "❌");
                     }
+                    totalPlatformCorrect = new ArrayList<>();
+                    platformCorrect = false;
 
                     System.out.println();
                     System.out.println("Input: ");
@@ -211,35 +214,57 @@ public class App {
                         correct = true;
                         System.out.println();
                     }
-                    if (gameList.get(guess - 1).getGenreName().equals(correctGame.getGenreName())) {
-                        genreCorrect = true;
+
+                    for (int i = 0; i < gameList.get(guess - 1).getGenreName().size(); i ++) {
+                        String guessGenre = gameList.get(guess - 1).getGenreName().get(i);
+                        for (int j = 0; j < correctGame.getGenreName().size(); j ++) {
+                            String answerGenre = correctGame.getGenreName().get(j);
+                            if (answerGenre.equals(guessGenre)) {
+                                genreCorrect = true;
+                                totalGenreCorrect.add(guessGenre);
+                            }
+                        }
                     }
-                    else {
-                        genreCorrect = false;
-                    }
+
                     if (gameList.get(guess - 1).getGameType().equals(correctGame.getGameType())) {
                         typeCorrect = true;
                     }
                     else {
                         typeCorrect = false;
                     }
-                    if (gameList.get(guess - 1).getGameEngineName().equals(correctGame.getGameEngineName())) {
-                        engineCorrect = true;
+
+
+                    for (int i = 0; i < gameList.get(guess - 1).getGameEngineName().size(); i ++) {
+                        String guessEngine = gameList.get(guess - 1).getGameEngineName().get(i);
+                        for (int j = 0; j < correctGame.getGameEngineName().size(); j ++) {
+                            String answerEngine = correctGame.getGameEngineName().get(j);
+                            if (answerEngine.equals(guessEngine)) {
+                                engineCorrect = true;
+                                totalEngineCorrect.add(guessEngine);
+                            }
+                        }
                     }
-                    else {
-                        engineCorrect = false;
+
+                    for (int i = 0; i < gameList.get(guess - 1).getCompanyName().size(); i ++) {
+                        String guessCompany = gameList.get(guess - 1).getCompanyName().get(i);
+                        for (int j = 0; j < correctGame.getCompanyName().size(); j ++) {
+                            String answerCompany = correctGame.getCompanyName().get(j);
+                            if (answerCompany.equals(guessCompany)) {
+                                companyCorrect = true;
+                                totalCompanyCorrect.add(guessCompany);
+                            }
+                        }
                     }
-                    if (gameList.get(guess - 1).getCompanyName().equals(correctGame.getCompanyName())) {
-                        companyCorrect = true;
-                    }
-                    else {
-                        companyCorrect = false;
-                    }
-                    if (gameList.get(guess - 1).getplatformName().equals(correctGame.getplatformName())) {
-                        platformCorrect = true;
-                    }
-                    else {
-                        platformCorrect = false;
+
+                    for (int i = 0; i < gameList.get(guess - 1).getplatformName().size(); i ++) {
+                        String guessPlatform = gameList.get(guess - 1).getplatformName().get(i);
+                        for (int j = 0; j < correctGame.getplatformName().size(); j ++) {
+                            String answerPlatform = correctGame.getplatformName().get(j);
+                            if (answerPlatform.equals(guessPlatform)) {
+                                platformCorrect = true;
+                                totalPlatformCorrect.add(guessPlatform);
+                            }
+                        }
                     }
                 }
 
@@ -252,6 +277,8 @@ public class App {
                 System.out.println("Game company: " + correctGame.getCompanyName());
                 System.out.println("Platform: " + correctGame.getplatformName());
                 System.out.println("Summary:" + correctGame.getSummary());
+                System.out.println();
+                System.out.println("------------------------------------------------------------------------");
                 System.out.println();
 
                 System.out.println("Press x to continue or press n to exit");
