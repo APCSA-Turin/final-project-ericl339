@@ -4,7 +4,9 @@ This Java project generates 7 random games, alongside their genre, type, engine,
 ```java
 getBearer()
 ```
-- Gets the bearer authorization code from a call to the API
+- Makes an HTTP POST request to the API to get the bearer code
+- Reads the full JSON response into a StringBuilder
+- Returns the edited JSON string to return a usable bearer code format
 ```java
 getClientId()
 ```
@@ -16,9 +18,10 @@ getClientSecret()
 ```java
 String getData(String link, String bearer, String clientId, String work)
 ```
-- Connects to the main api with a post request
+- Makes an HTTP POST request to the main API
 - Calls on the API with a specified command alongside the authorization code and the client id
-- Returns the output of the API as a string
+- Reads the full JSON response into a StringBuilder
+- Returns the edited JSON string to return a usable bearer code format
 ```java
 GameInfo(ArrayList<String> genreName, String gameType, ArrayList<String> gameEngineName, ArrayList<String> companyName, ArrayList<String> platformName, String name, String summary)
 ```
@@ -51,6 +54,26 @@ getName()
 getSummary()
 ```
 - Returns the summary of the game
+```java
+main(String[] args)
+```
+- The main logic of the game
+- Starts off with a call on 
+```java
+getBearer()
+```
+to get the bearer authorization
+- Introduces the game and prompting the user to choose their guessing mode
+- Calls on 
+```java
+String getData(String link, String bearer, String clientId, String work)
+```
+to get the total game count depending on the user's mode and then creating a random offset to randomize the games
+- Calls on
+```java
+String getData(String link, String bearer, String clientId, String work)
+```
+to generate 7 random games
 # 3. Features Implemented (Rubric Aligned)
 dsf
 # 4. Output Example
