@@ -207,30 +207,38 @@ public class App {
                 boolean correct = false;
                 System.out.println();
 
-                // creates 
+                // creates a set of array lists to contain info that are the same between the guessed game and the correct game
                 ArrayList<String> totalGenreCorrect = new ArrayList<>();
                 ArrayList<String> totalEngineCorrect = new ArrayList<>();
                 ArrayList<String> totalCompanyCorrect = new ArrayList<>();
                 ArrayList<String> totalPlatformCorrect = new ArrayList<>();
 
+                // runs while the guesses are not correct
                 while (correct == false) {
+                    // prints out instructions and the round number
                     System.out.println("ROUND " + (rounds + 1));
                     System.out.println("\nGuess the game from this list using your numpad! ");
+                    // prints out the games from the game list alongside their summary to help the player guess
                     for (int i = 0; i < gameList.size(); i ++) {
                         System.out.println(i+1 + ") " + gameList.get(i).getName());
                         System.out.println("Summary: " + gameList.get(i).getSummary());
                         System.out.println();
                     }
 
+                    // if at least one of the genre is correct then it will display it
+                    // otherwise say that the genre is completely wrong
                     if (genreCorrect) {
                         System.out.println("Genre: " + "✅" + " " + totalGenreCorrect);
                     }
                     else {
                         System.out.println("Genre: " + "❌");
                     }
+                    // resets the array for the next guess 
+                    // resets the genreCorrect boolean to false
                     totalGenreCorrect = new ArrayList<>();
                     genreCorrect = false;
 
+                    //same thing as genreCorrect
                     if (typeCorrect) {
                         System.out.println("Type: " + "✅" + " " + correctGame.getGameType());
                     }
@@ -238,6 +246,7 @@ public class App {
                         System.out.println("Type: " + "❌");
                     }
 
+                    //same thing as genreCorrect
                     if (engineCorrect) {
                         System.out.println("Game engine: " + "✅" + " " + totalEngineCorrect);
                     }
@@ -247,6 +256,7 @@ public class App {
                     totalEngineCorrect = new ArrayList<>();
                     engineCorrect = false;
 
+                    //same thing as genreCorrect
                     if (companyCorrect) {
                         System.out.println("Game company: " + "✅" + " " + totalCompanyCorrect);
                     }
@@ -256,6 +266,7 @@ public class App {
                     totalCompanyCorrect = new ArrayList<>();
                     companyCorrect = false;
 
+                    // same thing as genreCorrect
                     if (platformCorrect) {
                         System.out.println("Platform: " + "✅" + " " + totalPlatformCorrect);
                     }
@@ -265,45 +276,65 @@ public class App {
                     totalPlatformCorrect = new ArrayList<>();
                     platformCorrect = false;
 
+                    // gives out instruction on how the user should input theri guesses and stores their guesses to guess
                     System.out.println();
                     System.out.println("Input using numpad: ");
                     int guess = scan.nextInt();
                     scan.nextLine();
+                    // runs if the guess is not correct
                     if (!gameList.get(guess - 1).getName().equals(correctGame.getName())) {
                         System.out.println();
+                        // prints out incorrect and subtracts the total points they will get
                         System.out.println("Incorrect!");
                         roundPoints --;
+                        // waits one second
                         TimeUnit.SECONDS.sleep(1);
                         System.out.println();
                     }
+                    // runs if the guess is correct
                     else if (gameList.get(guess - 1).getName().equals(correctGame.getName())) {
                         System.out.println();
+                        // prints out correct
                         System.out.println("Correct!");
+                        // adds the round points to the total points
                         totalPoints += roundPoints;
+                        // prints out how much points the user earned
                         System.out.println("You earned "+ roundPoints + " points this round!");
+                        // sets correct to true so that the while loop will end
                         correct = true;
                         System.out.println();
                     }
 
+                    // adds a genre to totalGenreCorrect if they match
+                    // iterates through the genre array for the guessed game
                     for (int i = 0; i < gameList.get(guess - 1).getGenreName().size(); i ++) {
+                        // sets the genre to guessGenre
                         String guessGenre = gameList.get(guess - 1).getGenreName().get(i);
+                        // iterates through the genre array of the correct game
                         for (int j = 0; j < correctGame.getGenreName().size(); j ++) {
+                            // sets the genre of the correct game to answerGenre
                             String answerGenre = correctGame.getGenreName().get(j);
+                            // runs if the two genres are equal
                             if (answerGenre.equals(guessGenre)) {
+                                // if they are, then genreCorrect will be true and adds the genre to totalGenreCorrect
                                 genreCorrect = true;
                                 totalGenreCorrect.add(guessGenre);
                             }
                         }
                     }
 
+                    // compares the game type of the guess to the correct game
                     if (gameList.get(guess - 1).getGameType().equals(correctGame.getGameType())) {
+                        // sets typeCorrect to true if the two are the same
                         typeCorrect = true;
                     }
                     else {
+                        // else sets it to false
                         typeCorrect = false;
                     }
 
-
+                    // same thing as the genre nested for loop above
+                    // this one is for the game engine
                     for (int i = 0; i < gameList.get(guess - 1).getGameEngineName().size(); i ++) {
                         String guessEngine = gameList.get(guess - 1).getGameEngineName().get(i);
                         for (int j = 0; j < correctGame.getGameEngineName().size(); j ++) {
@@ -315,6 +346,8 @@ public class App {
                         }
                     }
 
+                    // same thing as the genre nested for loop above
+                    // this one is for the game company
                     for (int i = 0; i < gameList.get(guess - 1).getCompanyName().size(); i ++) {
                         String guessCompany = gameList.get(guess - 1).getCompanyName().get(i);
                         for (int j = 0; j < correctGame.getCompanyName().size(); j ++) {
@@ -326,6 +359,8 @@ public class App {
                         }
                     }
 
+                    // same thing as the genre nested for loop above
+                    // this one is for the game platform
                     for (int i = 0; i < gameList.get(guess - 1).getplatformName().size(); i ++) {
                         String guessPlatform = gameList.get(guess - 1).getplatformName().get(i);
                         for (int j = 0; j < correctGame.getplatformName().size(); j ++) {
@@ -338,6 +373,7 @@ public class App {
                     }
                 }
 
+                // prints out all the info about the game once the user gets it correct
                 System.out.println();
                 System.out.println("Info about " + correctGame.getName() + ":");
                 System.out.println();
@@ -351,16 +387,21 @@ public class App {
                 System.out.println("------------------------------------------------------------------------");
                 System.out.println();
 
+                // prompts the user to continue playing by pressing x
                 System.out.println("Press x to continue or press n to exit");
                 input = scan.nextLine();
+                // if the user presses n then the loop will break, ending the game
                 if (input.equals("n")) {
                     break;
                 }
+                // adds one to round
                 rounds ++;
+                // if the user presses x, then prompts these options again for them to choose
                 System.out.println("Choose an option:\n1)7 random games to guess\n2)7 games to guess from a franchise");
                 option = scan.nextInt();
                 scan.nextLine();
                 //i learned this from https://stackoverflow.com/questions/24104313/how-do-i-make-a-delay-in-java
+                // same thing as the choice from before the loop, just copied and pasted over
                 if (option == 1) {
                     System.out.print("Loading");
                     TimeUnit.SECONDS.sleep(1);
@@ -377,8 +418,8 @@ public class App {
                     // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
                     gameArray = new JSONArray(output);
                 }
+                // same thing as the choice before the loop, just copied and pasted over
                 else if (option == 2) {
-
                     System.out.println("Type in a popular franchise: ");
                     franchiseChoice = scan.nextLine();
                     System.out.print("Loading");
@@ -396,6 +437,7 @@ public class App {
                     // i learned this from https://www.tutorialspoint.com/how-to-write-create-a-json-array-using-java
                     gameArray = new JSONArray(output);   
                 }
+                // same thing as the choice from before the loop, just copied and pasted over
                 else {
                     System.out.println("That's not an option!");
                     System.out.println("Defaulted to 7 random games");
@@ -418,11 +460,16 @@ public class App {
                 TimeUnit.SECONDS.sleep(1);
                 TimeUnit.SECONDS.sleep(1);
             }
+            // prints out the total rounds and points during the user's session
             System.out.println("Total rounds: " + (rounds + 1));
             System.out.println("Total points: " + totalPoints);
+            // calculates the average points
             double average = (double) totalPoints / (rounds + 1) ;
+            // prints out the average points for the user
             System.out.println("Average points per round: " + average);
-        } catch (Exception e) {
+        } 
+        // catches the exception from the api
+        catch (Exception e) {
             System.err.println("Failed to get token: " + e.getMessage());
             e.printStackTrace();
         }
