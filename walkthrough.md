@@ -85,6 +85,6 @@ main(String[] args)
 - Genre, game type, game engine, game company, game platform, game name, and game summary are sorted
 Total = 96%
 # 4. Output Example
-![alt text](https://drive.google.com/file/d/1zId2kd9D_aySQYCV6skUqxaoFQjwMAeH/view?usp=sharing)
+![alt text](https://imgur.com/a/ZrAWxVb)
 # 5. What I Learned
 sfd
