@@ -41,5 +41,5 @@ public class twitchGetter {
     // returns the client id
     public static String getClientId(){return clientId;}
     // returns the client secret
-    public static String getClientSecret( ){return clientSecret;}
+    public static String getClientSecret(){return clientSecret;}
 }
