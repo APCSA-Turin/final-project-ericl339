@@ -78,13 +78,15 @@ main(String[] args)
 - Uses 4 Java classes
 - Parses JSON response using basic string matching
 - Displays more than 3 meaningful information
+
 ✔ Basic Statistics or Machine Learning (6%)
 - Performs an average using local data
+
 ✔ Filter/Sort Data (+2%)
 - Game franchise is filtered
 - Genre, game type, game engine, game company, game platform, game name, and game summary are sorted
+
 Total = 96%
 # 4. Output Example
-![alt text](https://picsum.photos/id/237/200/300)
+sfd![Screenshot 2025-05-22 185231](https://github.com/user-attachments/assets/6d3f97d3-ec27-4795-b75f-42acd6ab4eb8)
 # 5. What I Learned
-sfd
