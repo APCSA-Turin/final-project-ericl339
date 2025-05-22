@@ -58,25 +58,33 @@ getSummary()
 main(String[] args)
 ```
 - The main logic of the game
-- Starts off with a call on 
-```java
-getBearer()
-```
-to get the bearer authorization
+- Starts off with a call on getBearer() to get the bearer authorization
 - Introduces the game and prompting the user to choose their guessing mode
-- Calls on 
-```java
-String getData(String link, String bearer, String clientId, String work)
-```
-to get the total game count depending on the user's mode and then creating a random offset to randomize the games
-- Calls on
-```java
-String getData(String link, String bearer, String clientId, String work)
-```
-to generate 7 random games
+- Calls on String getData(String link, String bearer, String clientId, String work) to get the total game count depending on the user's mode and then creating a random offset to randomize the games
+- Calls on java String getData(String link, String bearer, String clientId, String work) to generate 7 random games
+- Iterates through each JSONObject of the JSONArray and adds the game information to a GameInfo ArrayList
+- If the user inputs a specific franchise, checks to see if it is actually a franchise by calling .size() on the ArrayList
+- Picks out a correct game from the ArrayList and displays the whole ArrayList to the user
+- Displays hints for the user through game info
+- Prompts the user to guess the game using numbers
+- Depending on the user's guess, checks off if a certain genre or engine matches to the correct game and displays it
+- After user gets it correct, add their round points to total points
+- Displays a loading section to prevent error 429
+- Prompts the user to continue playing or end the game
+- Displays the user's total points, total rounds, and their average points per round
 # 3. Features Implemented (Rubric Aligned)
-dsf
+✔ Base Project (88%)
+- Uses an external API (IGDB API)
+- Uses 4 Java classes
+- Parses JSON response using basic string matching
+- Displays more than 3 meaningful information
+✔ Basic Statistics or Machine Learning (6%)
+- Performs an average using local data
+✔ Filter/Sort Data (+2%)
+- Game franchise is filtered
+- Genre, game type, game engine, game company, game platform, game name, and game summary are sorted
+Total = 96%
 # 4. Output Example
-fsd
+![alt text](https://drive.google.com/file/d/1zId2kd9D_aySQYCV6skUqxaoFQjwMAeH/view?usp=sharing)
 # 5. What I Learned
 sfd
