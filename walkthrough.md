@@ -90,3 +90,6 @@ Total = 96%
 # 4. Output Example
 sfd![Screenshot 2025-05-22 185231](https://github.com/user-attachments/assets/6d3f97d3-ec27-4795-b75f-42acd6ab4eb8)
 # 5. What I Learned
+- I learned how to connect and access an API in Java and Postman
+- I learned how to parse a JSON Object and iterate through a JSONArray
+- I learned how to use commands when accessing an API
