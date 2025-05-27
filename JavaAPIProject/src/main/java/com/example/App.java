@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class App {
     public static void main(String[] args) {
@@ -18,10 +21,51 @@ public class App {
             String clientId = twitchGetter.getClientId(); // client id
             String clientSecret = twitchGetter.getClientSecret(); // client secret
 
-            // creates a ascanner object and prompts the user to press x to start the game
+            // initializes total points to 0
+            int totalPoints = 0;
+            // creates how many rounds there are
+            int rounds = 0;
+
+            // creates a a scanner object and prompts the user to press x to start the game
             Scanner scan = new Scanner(System.in);
             System.out.println("Welcome! Press x to start");
             String input = scan.nextLine();
+
+            //asks the user whether they would like to load a save file or if they would like to delete their save file
+            System.out.println("Would you like to load a save file? (y/n)\nWould you like to delete your save file? (d)");
+            String loadSave = scan.nextLine();
+            // initializes files
+            String files = null;
+            // runs if the user types in y
+            if (loadSave.equals("y")) {
+                // accesses save.txt and copies the line over
+                try (BufferedReader reader = new BufferedReader(new FileReader("save.txt"))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        files = line;
+                    }
+                } 
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // if the files contain only nothing, then it does not parse it into ints
+                if (files.equals("nothing")) {
+                    System.out.println("No save found!");
+                }
+                // else if it has things, then run
+                else {
+                    // prints out the user's load information
+                    System.out.println("Load: " + files);
+                    // parses the files string into round and point ints
+                    rounds = Integer.parseInt(files.substring(7, files.indexOf(" points")));
+                    totalPoints = Integer.parseInt(files.substring(files.indexOf(" points") + 8));
+                }
+            }
+            // if the user wants to delete their load, then overwrite everything with nothing
+            else if (loadSave.equals("d")) {
+                saveData("nothing");
+            }
+            
             // prompts the user to choose either to guess from 7 randomly generated games or 7 sorted ones
             System.out.println("Choose an option:\n1)7 random games to guess\n2)7 games to guess from a franchise");
             int option = scan.nextInt();
@@ -38,10 +82,6 @@ public class App {
             JSONArray gameArray = null;
             // creates a franchiseChoice which stores the user's choice if they choose the second option
             String franchiseChoice = null;
-            // initializes total points to 0
-            int totalPoints = 0;
-            // creates how many rounds there are
-            int rounds = 0;
             // if player chooses option 1
             if (option == 1) {
                 // prints out loading
@@ -382,7 +422,7 @@ public class App {
                 System.out.println("Game engine: " + correctGame.getGameEngineName());
                 System.out.println("Game company: " + correctGame.getCompanyName());
                 System.out.println("Platform: " + correctGame.getplatformName());
-                System.out.println("Summary:" + correctGame.getSummary());
+                System.out.println("Summary: " + correctGame.getSummary());
                 System.out.println();
                 System.out.println("------------------------------------------------------------------------");
                 System.out.println();
@@ -467,11 +507,30 @@ public class App {
             double average = (double) totalPoints / (rounds + 1) ;
             // prints out the average points for the user
             System.out.println("Average points per round: " + average);
-        } 
+            System.out.println();
+            // asks the user if they want to save their data
+            System.out.println("Do you want to save your round and points info? (y/n)");
+            String yesOrNo = scan.nextLine();
+            // if they do, then call the saveData method
+            if (yesOrNo.equals("y")) {
+                String data = "rounds " + (rounds + 1) + " points " + totalPoints;
+                saveData(data);
+            }
+        }
         // catches the exception from the api
         catch (Exception e) {
             System.err.println("Failed to get token: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    public static void saveData(String data) {
+        try (FileWriter writer = new FileWriter("save.txt")) {
+            writer.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

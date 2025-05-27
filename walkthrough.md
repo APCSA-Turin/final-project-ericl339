@@ -72,12 +72,16 @@ main(String[] args)
 - Displays a loading section to prevent error 429
 - Prompts the user to continue playing or end the game
 - Displays the user's total points, total rounds, and their average points per round
+```java
+saveData(String data)
+```
+- Saves the user's points and round number into a string file
 # 3. Features Implemented (Rubric Aligned)
 ✔ Base Project (88%)
 - Uses an external API (IGDB API)
 - Uses 4 Java classes
 - Parses JSON response using basic string matching
-- Displays more than 3 meaningful information
+- Displays more than 3 meaningful information (game name, game genre, game engine, game publisher, game summary)
 
 ✔ Basic Statistics or Machine Learning (6%)
 - Performs an average using local data
@@ -86,7 +90,11 @@ main(String[] args)
 - Game franchise is filtered
 - Genre, game type, game engine, game company, game platform, game name, and game summary are sorted
 
-Total = 96%
+✔ Save (Write) /Load (Read) Data (+2%)
+- Saves the user's points and round number to a txt file
+- Loads it if the user wants it
+
+Total = 98%
 # 4. Output Example
 Example![Screenshot 2025-05-22 185231](https://github.com/user-attachments/assets/6d3f97d3-ec27-4795-b75f-42acd6ab4eb8)
 # 5. What I Learned
