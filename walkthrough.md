@@ -5,7 +5,7 @@ This Java project generates 7 random games, alongside their genre, type, engine,
 getBearer()
 ```
 - Makes an HTTP POST request to the API to get the bearer code
-- Reads the full JSON response into a StringBuilder
+- Reads the JSON response into a StringBuilder
 - Returns the edited JSON string to return a usable bearer code format
 ```java
 getClientId()
@@ -20,7 +20,7 @@ String getData(String link, String bearer, String clientId, String work)
 ```
 - Makes an HTTP POST request to the main API
 - Calls on the API with a specified command alongside the authorization code and the client id
-- Reads the full JSON response into a StringBuilder
+- Reads the JSON response into a StringBuilder
 - Returns the edited JSON string to return a usable bearer code format
 ```java
 GameInfo(ArrayList<String> genreName, String gameType, ArrayList<String> gameEngineName, ArrayList<String> companyName, ArrayList<String> platformName, String name, String summary)

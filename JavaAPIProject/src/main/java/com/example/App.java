@@ -64,6 +64,7 @@ public class App {
             // if the user wants to delete their load, then overwrite everything with nothing
             else if (loadSave.equals("d")) {
                 saveData("nothing");
+                System.out.println("Save deleted");
             }
             
             // prompts the user to choose either to guess from 7 randomly generated games or 7 sorted ones
@@ -531,6 +532,4 @@ public class App {
             e.printStackTrace();
         }
     }
-
-
 }
